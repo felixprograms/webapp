@@ -18,7 +18,8 @@ helpers Sinatra::Cookies
   end
 
   get '/' do
-    erb :index, layout: :layout
+    #erb :index, layout: :layout
+    'hello'
   end
 
   get '/login' do
