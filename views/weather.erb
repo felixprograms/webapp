@@ -1,1 +1,8 @@
-<h1>Here's today's weather in <%= city %> is <%= temperature %> degrees celsius.</h1>
+<form action="/weather" method="post">
+        <div class="form-group">
+	  <label for="exampleInputEmail">City</label>
+	  <input type="text"class="form-control" id="exampleInputEmail" name="city" required>
+	  <small id="emailHelp" class="form-text text-muted">Enter City Here</small>
+
+          <button type="submit" class="btn btn-outline-primary">Search</button>
+</form>

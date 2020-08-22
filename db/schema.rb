@@ -10,11 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_13_075603) do
+ActiveRecord::Schema.define(version: 2020_08_01_071837) do
+
+  create_table "tamagotchis", force: :cascade do |t|
+    t.string "name"
+    t.integer "health"
+    t.integer "fun"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "password"
+    t.string "session_hash"
   end
 
   create_table "zombies", force: :cascade do |t|

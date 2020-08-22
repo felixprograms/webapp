@@ -1,25 +1,28 @@
-
 require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/activerecord'
-require './models'
+require_relative './models'
 require "sinatra/cookies"
 require 'faraday'
+require 'bcrypt'
 
 set :database, {adapter: "sqlite3", database: "foo.sqlite3"}
-
+enable :sessions
 register Sinatra::ActiveRecordExtension
 
 class App < Sinatra::Base
 helpers Sinatra::Cookies
   get '/logout' do
-    cookies.delete("user_name")
+    user = User.find_by(session_hash: cookies[:session_hash])
+    if user
+      user.update(session_hash: SecureRandom.hex(16))
+    end
+    cookies.delete("session_hash")
     redirect '/'  
   end
 
   get '/' do
-    #erb :index, layout: :layout
-    'hello'
+    erb :index, layout: :layout
   end
 
   get '/login' do
@@ -27,29 +30,34 @@ helpers Sinatra::Cookies
   end
 
   post '/login' do
+    if user_logged_in?
+       redirect '/'
+    end
     username = params[:username]
     password = params[:password]
     user = User.find_by(name: username)
     return "BAD" unless user.present?
-    return "BAD" unless user.password == password
-    cookies[:user_name] = user.name
+    return "BAD" unless BCrypt::Password.new(user.password) == password
+    cookies[:session_hash] = user.session_hash
+    cookies[:toast_title] = "Sucess--well done!"
+    cookies[:toast_body] = "Thanks for logging in #{user.name}" 
     redirect '/'
   end
 
   get '/weather' do
-# use user_logged_in? to find out if the user is logged in 
-# if user logged in then make an api call to the weather API and get the temperature
-# display the temperature and the city inside the :weather template
-    if user_logged_in?
-       city = params[:city]
-       temperature = get_temperature(city)
-       erb :weather, layout: :layout, locals:{city: city,temperature: temperature}
-    end
+    redirect '/' unless user_logged_in?
+    erb :weather, layout: :layout
   end
 
+  post '/weather' do
+    city = params[:city] || 'London'
+    temperature = get_temperature(city)
+    @toast = { title: 'hello', body: 'some text' }
+    erb :weather_display, layout: :layout, locals: {city: city, temperature: temperature, toast: { title: 'Hello', body: 'some text' } }
+  end	
+
   def user_logged_in?
-    name = cookies[:user_name]
-    User.find_by(name: name).present?
+    session_hash = cookies[:session_hash]
   end
 
   def get_temperature(city_name)
@@ -60,5 +68,11 @@ helpers Sinatra::Cookies
     weather_data = JSON.parse(response.body)
     temperature = weather_data['main']['temp']
     temperature.to_s
+  end
+  get '/tamagotchi' do
+    redirect '/' unless user_logged_in?
+    tamagotchis = Tamagotchi.all
+    erb :tamagotchis, layout: :layout, locals: {tamagotchis: tamagotchis}
+
   end
 end
