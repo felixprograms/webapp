@@ -26,13 +26,13 @@ helpers Sinatra::Cookies
   end
 
   get '/login' do
+    if user_logged_in?
+       redirect '/'
+    end
     erb :login, layout: :layout
   end
 
   post '/login' do
-    if user_logged_in?
-       redirect '/'
-    end
     username = params[:username]
     password = params[:password]
     user = User.find_by(name: username)
