@@ -21,7 +21,12 @@
 env :PATH, '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin'
 set :bundle_command, "/usr/local/bin/bundle exec"
 set :output, '~/webapp/log/cron_log.log'
-every 1.day do
-  rake 'scan_new'
+
+every "0 12 * * *" do
+  rake 'scan_new' 
+end
+
+every "0 12 * * *" do
+  rake 'fun'
 end
 
