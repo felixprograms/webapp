@@ -12,3 +12,4 @@ gem 'sinatra-contrib'
 gem 'i18n'
 gem 'unicorn'
 gem 'sentimental'
+gem 'whenever', require: false
