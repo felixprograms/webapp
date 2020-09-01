@@ -23,10 +23,6 @@ set :bundle_command, "/usr/local/bin/bundle exec"
 set :output, '~/webapp/log/cron_log.log'
 
 every "0 12 * * *" do
-  rake 'scan_new' 
-end
-
-every "0 12 * * *" do
   rake 'fun'
 end
 
