@@ -1,5 +1,6 @@
 <%tamagotchis.each do |tamagotchi|%>
 	<p>
+	<img src="https://robohash.org/<%= tamagotchi.id %>?size=150x150"/>
 	<%= tamagotchi.name %> <%= tamagotchi.health %> <%= tamagotchi.fun %>
 	</p>
 <%end%>	
