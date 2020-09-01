@@ -69,10 +69,10 @@ helpers Sinatra::Cookies
     temperature = weather_data['main']['temp']
     temperature.to_s
   end
-  get '/tamagotchi' do
+
+  get '/tamagotchis' do
     redirect '/' unless user_logged_in?
     tamagotchis = Tamagotchi.all
     erb :tamagotchis, layout: :layout, locals: {tamagotchis: tamagotchis}
-
   end
 end
