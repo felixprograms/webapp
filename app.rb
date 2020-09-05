@@ -52,7 +52,6 @@ helpers Sinatra::Cookies
   post '/weather' do
     city = params[:city] || 'London'
     temperature = get_temperature(city)
-    @toast = { title: 'hello', body: 'some text' }
     erb :weather_display, layout: :layout, locals: {city: city, temperature: temperature, toast: { title: 'Hello', body: 'some text' } }
   end	
 
@@ -74,5 +73,16 @@ helpers Sinatra::Cookies
     redirect '/' unless user_logged_in?
     tamagotchis = Tamagotchi.all
     erb :tamagotchis, layout: :layout, locals: {tamagotchis: tamagotchis}
+  end
+  
+  get '/create_an_tamagotchi' do
+    redirect '/' unless user_logged_in?
+    erb :create_an_tamagotchi, layout: :layout
+  end
+
+  post '/create_an_tamagotchi' do
+    tamagotchi_name = params[:username]
+    Tamagotchi.create(name: tamagotchi_name, health:100, fun:100)
+    redirect '/tamagotchis'
   end
 end

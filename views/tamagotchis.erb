@@ -1,6 +1,8 @@
 <%tamagotchis.each do |tamagotchi|%>
-	<p>
-	<img src="https://robohash.org/<%= tamagotchi.id %>?size=150x150"/>
-	<%= tamagotchi.name %> <%= tamagotchi.health %> <%= tamagotchi.fun %>
-	</p>
-<%end%>	
+	<img src="https://robohash.org/<%= tamagotchi.id %>?size=150x150"/> 
+	<ul class="list-group list-group-horizontal">
+	<li class="list-group-item">Name: <%= tamagotchi.name %></li>
+	<li class="list-group-item">Health: <%= tamagotchi.health %></li>
+	<li class="list-group-item">Fun: <%= tamagotchi.fun %></li>
+	</ul>
+<% end %>

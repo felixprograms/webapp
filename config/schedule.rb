@@ -21,8 +21,10 @@
 env :PATH, '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin'
 set :bundle_command, "/usr/local/bin/bundle exec"
 set :output, '~/webapp/log/cron_log.log'
-
-every "0 12 * * *" do
+every "0 */8 * * *" do
   rake 'fun'
 end
 
+every "0 12 * * *" do
+  rake 'create_an_new_tamagotchi'
+end

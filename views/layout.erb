@@ -61,7 +61,10 @@
              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Tamagotchi</a>
 	   </li>
            <% end %>
-	</ul>
+	   <li class="nav-item <%= user_logged_in? ? 'active' : ' ' %>">
+	     <a class="nav-link <%= user_logged_in? ? ' ' : 'disabled' %>" href="/create_an_tamagotchi">Create A Tamagotchi</a>
+           </li>
+	  </ul>
       </div>
     </nav>
     <%= yield %>

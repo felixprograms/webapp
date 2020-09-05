@@ -10,3 +10,7 @@ task :fun do
     p tamagotchi.fun
   end
 end
+
+task :create_an_new_tamagotchi do  
+  Tamagotchi.create(name: 'tamagotchi', health:100, fun:100)
+end
