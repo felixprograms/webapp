@@ -22,6 +22,8 @@ helpers Sinatra::Cookies
   end
 
   get '/' do
+    cookies.delete('toast_title')
+    cookies.delete('toast_body')
     erb :index, layout: :layout
   end
 
@@ -39,7 +41,7 @@ helpers Sinatra::Cookies
     return "BAD" unless user.present?
     return "BAD" unless BCrypt::Password.new(user.password) == password
     cookies[:session_hash] = user.session_hash
-    cookies[:toast_title] = "Sucess--well done!"
+    cookies[:toast_title] = "Success--well done!"
     cookies[:toast_body] = "Thanks for logging in #{user.name}" 
     redirect '/'
   end
