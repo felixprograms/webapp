@@ -28,3 +28,7 @@ end
 every "0 12 * * *" do
   rake 'create_an_new_tamagotchi'
 end
+
+every "0 4 * * *" do
+	  rake 'health'
+end

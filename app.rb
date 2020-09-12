@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/base'
+require 'sinatra/flash'
 require 'sinatra/activerecord'
 require_relative './models'
 require "sinatra/cookies"
@@ -7,12 +8,14 @@ require 'faraday'
 require 'bcrypt'
 
 set :database, {adapter: "sqlite3", database: "foo.sqlite3"}
-enable :sessions
-register Sinatra::ActiveRecordExtension
 
 class App < Sinatra::Base
-helpers Sinatra::Cookies
-  get '/logout' do
+	enable :sessions
+	register Sinatra::ActiveRecordExtension
+	register Sinatra::Flash
+	helpers Sinatra::Cookies
+  
+	get '/logout' do
     user = User.find_by(session_hash: cookies[:session_hash])
     if user
       user.update(session_hash: SecureRandom.hex(16))
@@ -22,8 +25,7 @@ helpers Sinatra::Cookies
   end
 
   get '/' do
-    cookies.delete('toast_title')
-    cookies.delete('toast_body')
+		flash[:success] = "hello"
     erb :index, layout: :layout
   end
 
@@ -41,8 +43,6 @@ helpers Sinatra::Cookies
     return "BAD" unless user.present?
     return "BAD" unless BCrypt::Password.new(user.password) == password
     cookies[:session_hash] = user.session_hash
-    cookies[:toast_title] = "Success--well done!"
-    cookies[:toast_body] = "Thanks for logging in #{user.name}" 
     redirect '/'
   end
 
@@ -57,7 +57,26 @@ helpers Sinatra::Cookies
     erb :weather_display, layout: :layout, locals: {city: city, temperature: temperature, toast: { title: 'Hello', body: 'some text' } }
   end	
 
-  def user_logged_in?
+  get '/feed' do
+    tamagotchi_id = params[:id]
+    tamagotchi = Tamagotchi.find_by(id:tamagotchi_id)
+    tamagotchi.update({health: tamagotchi.health + 10})
+    redirect '/tamagotchis'
+  end
+
+  get '/registration' do
+    erb :registration, layout: :layout
+  end
+
+  post '/registration' do
+    username = params[:username]
+    password = params[:password]
+    email = params[:email]
+    User.create({name: username, password: password})
+    redirect '/login'
+  end
+  
+	def user_logged_in?
     session_hash = cookies[:session_hash]
   end
 

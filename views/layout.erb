@@ -15,19 +15,18 @@
   <title>Felix's Super Web</title>
   </head>
   <body>
-	  <% if cookies[:toast_title] %>
+	  <% if flash[:success] %>
 		  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false" style="z-index: 999; position: absolute; right: 0;">
-  <div class="toast-header">
-	  <strong class="mr-auto"><%= cookies[:toast_title] %></strong>
-    <small>Now</small>
-    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="toast-body">
-	  <%= cookies[:toast_body] %>
-  </div>
-</div>
+			  <div class="toast-header">
+	  			<strong class="mr-auto">Notice</strong>
+    			<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+      			<span aria-hidden="true">&times;</span>
+    			</button>
+  			</div>
+  			<div class="toast-body">
+	  			<%= flash %>
+  			</div>
+			</div>
 	  <% end %>
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
       <a class="navbar-brand" href="/">Felix's Homepage</a>
@@ -58,12 +57,15 @@
 	  </li>
           <% else %>
            <li class="nav-item">
-             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Tamagotchi</a>
+             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Tamagotchis</a>
 	   </li>
            <% end %>
 	   <li class="nav-item <%= user_logged_in? ? 'active' : ' ' %>">
 	     <a class="nav-link <%= user_logged_in? ? ' ' : 'disabled' %>" href="/create_an_tamagotchi">Create A Tamagotchi</a>
-           </li>
+	   </li>
+	   <li class="nav-item active">
+	        <a class="nav-link" href="/registration">Registration</a>
+		</li>
 	  </ul>
       </div>
     </nav>
