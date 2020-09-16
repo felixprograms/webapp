@@ -1,6 +1,9 @@
+
+
+
 require 'sinatra'
 require 'sinatra/base'
-require 'sinatra/flash'
+# require 'sinatra/flash'
 require 'sinatra/activerecord'
 require_relative './models'
 require "sinatra/cookies"
@@ -12,7 +15,7 @@ set :database, {adapter: "sqlite3", database: "foo.sqlite3"}
 class App < Sinatra::Base
 	enable :sessions
 	register Sinatra::ActiveRecordExtension
-	register Sinatra::Flash
+#	register Sinatra::Flash
 	helpers Sinatra::Cookies
   
 	get '/logout' do
@@ -25,7 +28,6 @@ class App < Sinatra::Base
   end
 
   get '/' do
-		flash[:success] = "hello"
     erb :index, layout: :layout
   end
 
@@ -40,8 +42,8 @@ class App < Sinatra::Base
     username = params[:username]
     password = params[:password]
     user = User.find_by(name: username)
-    return "BAD" unless user.present?
-    return "BAD" unless BCrypt::Password.new(user.password) == password
+    redirect '/login' unless user.present?
+    redirect '/login' unless BCrypt::Password.new(user.password) == password
     cookies[:session_hash] = user.session_hash
     redirect '/'
   end
@@ -63,6 +65,14 @@ class App < Sinatra::Base
     tamagotchi.update({health: tamagotchi.health + 10})
     redirect '/tamagotchis'
   end
+
+  get '/play' do
+    tamagotchi_id = params[:id]
+    tamagotchi = Tamagotchi.find_by(id:tamagotchi_id)
+    tamagotchi.update({fun: tamagotchi.fun + 10})
+    redirect '/tamagotchis'
+  end
+
 
   get '/registration' do
     erb :registration, layout: :layout

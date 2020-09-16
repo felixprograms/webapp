@@ -5,7 +5,10 @@
 	<li class="list-group-item">Health: <%= tamagotchi.health %></li>
 	<li class="list-group-item">Fun: <%= tamagotchi.fun %></li>
 	<li class="list-group-item">
-		<a href='/feed?id=<%= tamagotchi.id %>'>Feed Me!</a>
+		<a href='/feed?id=<%= tamagotchi.id %>'>Feed!</a>
 	</li>
+   <li class="list-group-item">
+    <a href='/play?id=<%= tamagotchi.id %>'>Play!</a>
+  </li>
 	</ul>
 <% end %>
