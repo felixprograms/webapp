@@ -1,21 +1,18 @@
-
-
-
 require 'sinatra'
 require 'sinatra/base'
-# require 'sinatra/flash'
 require 'sinatra/activerecord'
 require_relative './models'
 require "sinatra/cookies"
 require 'faraday'
 require 'bcrypt'
+require 'sinatra/flash'
 
 set :database, {adapter: "sqlite3", database: "foo.sqlite3"}
 
 class App < Sinatra::Base
 	enable :sessions
+	register Sinatra::Flash
 	register Sinatra::ActiveRecordExtension
-#	register Sinatra::Flash
 	helpers Sinatra::Cookies
   
 	get '/logout' do
@@ -24,6 +21,7 @@ class App < Sinatra::Base
       user.update(session_hash: SecureRandom.hex(16))
     end
     cookies.delete("session_hash")
+		flash[:notice] = "You are logged out"
     redirect '/'  
   end
 
@@ -45,6 +43,7 @@ class App < Sinatra::Base
     redirect '/login' unless user.present?
     redirect '/login' unless BCrypt::Password.new(user.password) == password
     cookies[:session_hash] = user.session_hash
+		flash[:notice] = "You are logged in"
     redirect '/'
   end
 

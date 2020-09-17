@@ -48,6 +48,10 @@ GEM
       rack-protection (= 2.0.8.1)
       sinatra (= 2.0.8.1)
       tilt (~> 2.0)
+    sinatra-flash (0.3.0)
+      sinatra (>= 1.0.0)
+    sinatra-session (1.0.0)
+      sinatra (>= 1.0)
     sqlite3 (1.4.2)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -72,6 +76,8 @@ DEPENDENCIES
   sinatra
   sinatra-activerecord
   sinatra-contrib
+  sinatra-flash
+  sinatra-session
   sqlite3
   unicorn
   whenever
