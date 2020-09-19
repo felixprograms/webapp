@@ -81,7 +81,7 @@ class App < Sinatra::Base
     username = params[:username]
     password = params[:password]
     email = params[:email]
-    User.create({name: username, password: password})
+    User.create({name: username, password: BCRYPT::Password.create(password), email: email}) unless User.find_by(name: username) == false and User.find_by(email: email) == false
     redirect '/login'
   end
   
