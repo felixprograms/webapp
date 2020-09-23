@@ -5,8 +5,8 @@ include SendGrid
 
 from = Email.new(email: ENV['EMAIL_ADDRESS'])
 to = Email.new(email: ENV['EMAIL_ADDRESS'])
-subject = 'Sending with SendGrid is Fun'
-content = Content.new(type: 'text/plain', value: 'and easy to do anywhere, even with Ruby')
+subject = 'You created an account'
+content = Content.new(type: 'text/plain', value: 'Just to inform you that you created an account successfully.')
 mail = Mail.new(from, subject, to, content)
 
 sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])

@@ -10,7 +10,10 @@ gem 'faraday'
 gem 'bcrypt'
 gem 'sinatra'
 gem 'i18n'
-gem 'unicorn'
+platforms :ruby do 
+    gem 'unicorn'
+  end
+  
 gem 'sentimental'
 gem 'sendgrid-ruby'
 gem 'sinatra-flash'
