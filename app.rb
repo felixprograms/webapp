@@ -86,6 +86,17 @@ class App < Sinatra::Base
     
   end
   
+  get '/reset_password' do
+    reset_token = params[:reset_token]
+  end
+  
+  post '/reset_password' do
+    reset_token = params[:reset_token]
+    user = User.find_by(reset_token: reset_token)
+    new_password = params[:new_password]
+    user.update(password: BCrypt::Password.create(new_password))
+    p 'ok'
+	end
 	def user_logged_in?
     session_hash = cookies[:session_hash]
   end
