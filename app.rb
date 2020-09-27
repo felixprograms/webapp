@@ -127,4 +127,12 @@ class App < Sinatra::Base
     Tamagotchi.create(name: tamagotchi_name, health:100, fun:100)
     redirect '/tamagotchis'
   end
+
+  get '/buy_stocks/new' do
+    erb :buy_stocks, layout: :layout
+  end
+
+  post '/buy_stocks' do
+    erb :index, layout: :layout
+  end
 end
