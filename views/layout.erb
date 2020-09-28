@@ -37,36 +37,28 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	  <ul class="navbar-nav mr-auto">
-          <li class="nav-item <%= user_logged_in? ? '' : 'active' %>">
-	          <a class="nav-link <%= user_logged_in? ? 'disabled' : '' %>" href="/login">Login</a>
-	  </li>
-	  <li class="nav-item <%= user_logged_in? ? 'active' : '' %>">
-		  <a class="nav-link <%= user_logged_in? ? '' : 'disabled' %>" href="/logout">Logout</a>
-	  </li>
-	  <% if user_logged_in? %>
-          <li class="nav-item active">
-            <a class="nav-link" href="/weather">Weather</a>
-	  </li>
-          <% else %>
-          <li class="nav-item">
-	    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Weather</a>
-          </li>
-          <% end %>
-	  <% if user_logged_in? %>
-	  <li class="nav-item active">
-	    <a class="nav-link" href="/tamagotchis">Tamagotchis</a>
-	  </li>
-          <% else %>
-           <li class="nav-item">
-             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Tamagotchis</a>
+	        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          User
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/login">Login</a>
+          <a class="dropdown-item" href="/registration">Registration</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/logout">Logout</a>
+        </div>
+      </li>
+
+	   <li class="nav-item <%= user_logged_in? ? 'active' : ' ' %>">
+	     <a class="nav-link <%= user_logged_in? ? ' ' : 'disabled' %>" href="/weather">Weather</a>
 	   </li>
-           <% end %>
+	   <li class="nav-item <%= user_logged_in? ? 'active' : ' ' %>">
+	     <a class="nav-link <%= user_logged_in? ? ' ' : 'disabled' %>" href="/tamagotchis">Tamagotchis</a>
+	   </li>
 	   <li class="nav-item <%= user_logged_in? ? 'active' : ' ' %>">
 	     <a class="nav-link <%= user_logged_in? ? ' ' : 'disabled' %>" href="/create_an_tamagotchi">Create A Tamagotchi</a>
 	   </li>
-	   <li class="nav-item active">
-	        <a class="nav-link" href="/registration">Registration</a>
-		</li>
+
 		<li class="nav-item <%= user_logged_in? ? 'active' : ' ' %>">
 	     <a class="nav-link <%= user_logged_in? ? ' ' : 'disabled' %>" href="/buy_stocks/new">Go to stock form</a>
 	   </li>

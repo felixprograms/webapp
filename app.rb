@@ -53,7 +53,7 @@ class App < Sinatra::Base
   end
 
   post '/weather' do
-    city = params[:city] || 'London'
+    city = params[:city]
     temperature = get_temperature(city)
     erb :weather_display, layout: :layout, locals: {city: city, temperature: temperature, toast: { title: 'Hello', body: 'some text' } }
   end	
@@ -87,7 +87,7 @@ class App < Sinatra::Base
   end
   
   get '/reset_password' do
-    reset_token = params[:reset_token]
+    erb :reset_password, layout: :layout
   end
   
   post '/reset_password' do
