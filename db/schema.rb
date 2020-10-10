@@ -10,11 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_03_011936) do
+ActiveRecord::Schema.define(version: 2020_10_10_103335) do
 
   create_table "exchanges", force: :cascade do |t|
     t.text "description"
     t.float "amount"
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_exchanges_on_user_id"
   end
 
   create_table "stocks", force: :cascade do |t|
