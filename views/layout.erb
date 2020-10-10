@@ -59,11 +59,16 @@
 	     <a class="nav-link <%= user_logged_in? ? ' ' : 'disabled' %>" href="/create_an_tamagotchi">Create A Tamagotchi</a>
 	   </li>
 
-		<li class="nav-item <%= user_logged_in? ? 'active' : ' ' %>">
-	     <a class="nav-link <%= user_logged_in? ? ' ' : 'disabled' %>" href="/buy_stocks/new">Go to stock form</a>
-	   </li>
-	  </ul>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Stocks
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="/buy_stocks/new">Go to stock form</a>
       </div>
+    </li>
+	</ul>
+    </div>
     </nav>
     <%= yield %>
 	<script>
