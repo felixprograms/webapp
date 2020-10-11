@@ -1,11 +1,12 @@
 require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/activerecord'
-require_relative './models'
 require "sinatra/cookies"
+require 'sinatra/flash'
 require 'faraday'
 require 'bcrypt'
-require 'sinatra/flash'
+require_relative './models'
+require_relative './stock_api'
 
 set :database, {adapter: "sqlite3", database: "foo.sqlite3"}
 
@@ -16,9 +17,8 @@ class App < Sinatra::Base
 	helpers Sinatra::Cookies
   
 	get '/logout' do
-    user = User.find_by(session_hash: cookies[:session_hash])
-    if user
-      user.update(session_hash: SecureRandom.hex(16))
+    if current_user
+      current_user.update(session_hash: SecureRandom.hex(16))
     end
     cookies.delete("session_hash")
 		flash[:notice] = "You are logged out"
@@ -97,20 +97,7 @@ class App < Sinatra::Base
     user.update(password: BCrypt::Password.create(new_password))
     p 'ok'
 	end
-	def user_logged_in?
-    session_hash = cookies[:session_hash]
-  end
-
-  def get_temperature(city_name)
-    api_key = ENV['WEATHER_API_KEY'] 
-    api_url = "http://api.openweathermap.org/data/2.5/weather?q=#{city_name}&appid=#{api_key}&units=metric"
-    response = Faraday.get(api_url)
-
-    weather_data = JSON.parse(response.body)
-    temperature = weather_data['main']['temp']
-    temperature.to_s
-  end
-
+	
   get '/tamagotchis' do
     redirect '/' unless user_logged_in?
     tamagotchis = Tamagotchi.all
@@ -124,7 +111,7 @@ class App < Sinatra::Base
 
   post '/create_an_tamagotchi' do
     tamagotchi_name = params[:username]
-    Tamagotchi.create(name: tamagotchi_name, health:100, fun:100)
+    Tamagotchi.create(name: tamagotchi_name, health: 100, fun: 100)
     redirect '/tamagotchis'
   end
 
@@ -133,6 +120,40 @@ class App < Sinatra::Base
   end
 
   post '/buy_stocks' do
-    erb :index, layout: :layout
+    redirect '/' unless user_logged_in?
+    price = StockApi.get_stock_price(params[:ticker])
+    amount = Float(params[:stock_amount])
+    total_amount = price * amount
+    user = current_user
+    monies = user.my_monies
+
+    if monies < total_amount
+      flash[:notice] = "You don't have enough money"
+      redirect '/buy_stocks/new'
+    end
+
+    exchange = Exchange.create(description: "Bought #{amount} of #{params[:ticker]}", amount: -total_amount, user_id: user.id)
+    Stock.create(exchange_id: exchange.id, ticker: params[:ticker], stocks: params[:stock_amount])
+    flash[:notice] = "You successfully bought #{amount} of #{params[:ticker]}, you have #{monies} left."
+    redirect '/'
   end
+
+  def current_user
+    User.find_by(session_hash: cookies[:session_hash])
+  end
+  
+  def user_logged_in?
+    session_hash = cookies[:session_hash]
+  end
+
+  def get_temperature(city_name)
+    api_key = ENV['WEATHER_API_KEY'] 
+    api_url = "http://api.openweathermap.org/data/2.5/weather?q=#{city_name}&appid=#{api_key}&units=metric"
+    response = Faraday.get(api_url)
+
+    weather_data = JSON.parse(response.body)
+    temperature = weather_data['main']['temp']
+    temperature.to_s
+  end
+
 end
