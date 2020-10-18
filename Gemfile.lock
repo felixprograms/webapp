@@ -31,6 +31,7 @@ GEM
       rack
     raindrops (0.19.1)
     rake (13.0.1)
+    redis (4.2.2)
     ruby2_keywords (0.0.2)
     ruby_http_client (3.5.1)
     sendgrid-ruby (6.3.4)
@@ -76,6 +77,7 @@ DEPENDENCIES
   faraday
   i18n
   rake
+  redis
   sendgrid-ruby
   sentimental
   sinatra
