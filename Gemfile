@@ -17,3 +17,4 @@ platforms :ruby do
 gem 'sentimental'
 gem 'sendgrid-ruby'
 gem 'sinatra-flash'
+gem 'redis'

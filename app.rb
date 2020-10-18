@@ -134,7 +134,7 @@ class App < Sinatra::Base
 
     exchange = Exchange.create(description: "Bought #{amount} of #{params[:ticker]}", amount: -total_amount, user_id: user.id)
     Stock.create(exchange_id: exchange.id, ticker: params[:ticker], stocks: params[:stock_amount])
-    flash[:notice] = "You successfully bought #{amount} of #{params[:ticker]}, you have #{monies} left."
+    flash[:notice] = "You successfully bought #{amount} of #{params[:ticker]}, you have #{user.my_monies} left."
     redirect '/'
   end
 
