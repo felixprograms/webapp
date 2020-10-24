@@ -1,0 +1,19 @@
+<ul class="list-group list-group-horizontal">
+	<li class="list-group-item">Username: <%= user.name %></li>
+</ul>
+
+<% user.my_stocks.each do |stock|%>
+    <ul class="list-group list-group-horizontal">
+	<li class="list-group-item">Ticker Name: <%= stock.ticker %></li>
+	<li class="list-group-item">Stocks amount: <%= stock.stocks %></li>
+	</ul>
+
+    <form action="/sell_stocks" method="post">
+	<div class="form-group">
+		<label for="amount">Amount you want to sell</label>
+		<input type="text" class="form-control" id="exampleInputEmail1" name="amount" required>
+	</div>
+
+	<button type="submit" class="btn btn-outline-primary">Sell</button>
+</form>
+<% end %>

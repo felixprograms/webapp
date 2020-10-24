@@ -138,6 +138,22 @@ class App < Sinatra::Base
     redirect '/'
   end
 
+  get '/stocks' do
+    redirect '/' unless user_logged_in?
+    user = current_user
+    erb :stocks, layout: :layout, locals: {user: user}
+  end
+
+  post '/sell_stocks' do
+    price = StockApi.get_stock_price(params[:ticker])
+    user = current_user
+    amount = Float(params[:amount])
+    total_amount = price * amount
+    exchange = Exchange.create(description: "Sold #{amount} of #{params[:ticker]}", amount: total_amount, user_id: user.id)
+    Stock.create(exchange_id: exchange.id, ticker: params[:ticker], stocks: params[:stock_amount])
+    flash[:notice] = "You successfully sold #{amount} of #{params[:ticker]}, you have #{user.my_monies} left."
+    redirect '/'
+  end
   def current_user
     User.find_by(session_hash: cookies[:session_hash])
   end
